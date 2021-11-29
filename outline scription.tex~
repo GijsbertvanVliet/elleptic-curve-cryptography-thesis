@@ -1,0 +1,187 @@
+\documentclass{article}
+\usepackage{fullpage}
+\usepackage{amsmath,amssymb}
+
+
+\begin{document}
+\title{Outline scription}
+\author{Gijsbert van Vliet}
+\date{\today}
+\maketitle
+
+\section{Introduction}
+Here I will explain the necessary mathematical background which will be:
+\begin{itemize} 
+\item Some basic knowledge of algebra. (the reader should be familiar with groups/ rings/ finite fields ect.) 
+\item Some knowledge of algebraic geometry. For example, reading and understanding the first two chapters of Silverman's "The arithmetic of Elliptic Curves" will suffice.
+\item Just general mathematical maturity. For example I will use the chinese remainder theorem without stating it.
+\end{itemize}
+
+\section{Introduction to cryptography}
+In this chapter I will give the general outlay of Public-key cryptography and the DLP.
+\subsection{Public-key cryptography}
+\subsection{complexity}
+\subsection{the discrete logarithm problem}
+\subsection{General attacks on the DLP}
+\subsubsection{The Pohlig-Hellman Method}
+\subsubsection{The baby step-giant step algorithm}
+\subsubsection{the Pollard $\rho$ and $\lambda$ method}
+
+\section{Elliptic Curves}
+In this section I will give the basic theory of elliptic curves. Most proofs will be omitted. For those I will refer to the book of Silverman.\\
+Standard notation:\\
+-$E/K$: E is defined over K.\\
+-$\bar{K}(C)$: the function field of E over $\bar{K}$.\\
+-$K(C)$: the function field of E over $K$.
+\subsection{Weierstrass Equations}
+-Define general/simplified Weierstrass equations.\\
+-Define discriminant $\Delta$,j-invariant $j$ and the invariant differential $\omega$.\\
+-Proposition 1.4.\\
+-Remark: Curves given by a Weierstrass equation are curves of genus 1.
+\subsection{Group law}
+-Definition of the group law.\\
+-Proposition: The group law makes $E$ into an abelian group.\\
+-Proposition: The $K$ rational points form a subgroup of E.\\
+-Remark: $P=(x,y) \in E \Rightarrow -P=(x,-y)$.\\
+-Notation $[m]P$.
+\subsection{Elliptic Curves}
+-Define Elliptic Curve $E$.\\
+-Proposition 3.1. (Possibly with outlay of the proof.)\\
+-Example.\\
+-Remark: Using RR to give group law on any elliptic curve. Proposition 3.4/3.6.\\
+-Corollary 3.5.
+\subsection{Isogenies}
+-Define Isogeny $\phi$ for elliptic curves.\\
+-Remark: Either $\phi(E_1) = \{O\}$ or $\phi(E_1)=E2$.\\
+-Define (in)separable degree of $\phi$.\\
+-Define Endomorphism and Automorphism ring.\\
+-Example 4.1.\\
+-Proposition 4.2.(a)\\
+-Define $E[m]$.\\
+-Explane complex multiplication.\\
+-Example(s).\\
+-Theorem 4.8.\\
+-Remark: Corollary 4.9.\\
+-Theorem 4.10.
+\subsection{The Frobenius morphism}
+-Define the q-th Frobenius morphism for Curve of Characteristic p.\\
+-Example.\\
+-Proposition II.2.11.\\
+-Corollary II.2.12.\\
+-Proposition 1.5.\\
+-Proposition 5.1.\\
+-Theorem 5.2.\\
+-Corollary 5.3.\\
+-Corollary 5.5. (with prooof)
+\subsection{The dual isogeny}
+-Theorem 6.1. (a)\\
+-Define the dual isogeny.\\
+-Theorem 6.2.\\
+-Corollary 6.4.
+\subsection{The Tate module}
+-introductory remarks.\\
+-Define Tate module.\\
+-Proposition 7.1.\\
+-Define the $l$-adic representation of the Galois group.\\
+-Theorem 7.4.
+\subsection{The Weil Pairing}
+-Justification construction.\\
+-Construction.\\
+-Proposition 8.1.\\
+-Corollary 8.1.1.\\
+-Proposition 8.2.\\
+-Proposition 8.3.\\
+-Proposition 8.6.
+\subsection{the endomorphism ring}
+-Define complex quadratic order.\\
+-Define quaternion algebra.\\
+-Corollary 9.2.\\
+-Remark: endomorphism ring of elliptic curve over finite field is never $\mathbb{Z}$.
+
+\section{Elliptic Curves over Finite Fields}
+Standard notation:\\
+-q is a power of a prime p.\\
+-$\mathbb{F}_q$ is a finite field with q elements.\\
+-$\bar{\mathbb{F}}_q$ is an algebraic Closure of $\mathbb{F}_q$.\\
+-Remark ECDLP.\\
+-Give small improvement for baby step- giant step algorithm.
+\subsection{The number of rational points}
+-Rough estimate $\leq 2q+1$.\\
+-Hasse's theorem.\\
+-Use of legendre symbol to calculate number of rational points.\\
+-Define Trace of frobenius morphism.\\
+-Theorem 2.3.1.\\
+-Linear recurrence for trace of $q^n$-frobenius morphism.
+\subsection{The endomorphism ring}
+-Theorem 3.1.(With proof)\\
+-definition supersingular, ordinary and Hasse invariant.\\
+-Theorem: E is supersingular iff p divides the trace of the frobenius morphism.
+\subsection{The group structure of elliptic Curves}
+-Proposition: type of elliptic curve over finite field.\\
+-Lemma1 from article MOV-attack.\\
+-Lemma2 from article MOV-attack.\\
+-Lemma3 from article MOV-attack.
+\subsection{Determining the Hasse Invariant}
+-Theorem 4.1.\\
+-examples.
+
+\section{Schoof's algorithm}
+\subsection{The division polynomials}
+-Define division polynomials $\psi_n$, the polynomials $f_n$ and give recurrence relations.\\
+-Proposition 2.1 from Schoof's Algorithm.\\
+-Proposition 2.2 from Schoof's Algorithm.
+\subsection{General outlay of the algorithm}
+-give relation determining the trace of frobenius mod $l$.\\
+-Explain Estimation for number of primes.\\
+-Give the relations to be tested.
+\subsection{Detailed description of the algorithm}
+-Give definition of gcd determining case distinction.\\
+-Give detailed description of case 1.\\
+-Give detailed description of case 2.
+\subsection{Efficiency of Schoof's algorithm}
+-Give theoretical complexity of algorithm.\\
+-Give examined running times for several different primes.\\
+-Draw conclusion.\\
+-Remark on existing improvements of algorithm.
+
+\section{The MOV Attack}}
+-Introductory remarks.
+\subsection{Index calculus}
+-General outlay.\\
+-Worked out example.
+\subsection{Calculating the Weil Pairing}
+-description of algorithm.\\
+-remark on complexity of the algorithm.
+\subsection{The Reduction}
+(The referrals are here to the article about the MOV attack.)\\
+-Lemma 4.\\
+-Lemma 5.\\
+-Example.\\
+-Lemma 6.\\
+-Lemma 7.\\
+-Theorem 10.\\
+-Give algorithm.
+\subsection{Supersingular Curves}
+-Give Table 1 about supersingular curves.\\
+-Give example(s) about how information of Table 1 was obtained.\\
+-Give algorithm.\\
+-Remarks on why the algorithm works.
+\subsection{Complexity}
+-Give theoretical estimation of the complexity of the algorithm.\\
+-(If this algorithm is actually implemented) give examined running times and draw appropriate conclusions. 
+
+\section{Anomalous curves}
+-Define Anomalous curves.\\
+-Example.
+\subsection{The case $p=q$.}
+\subsection{The general case.}
+
+\section{Elliptic Curve cryptography}
+\subsection{Diffie-Hellman Key Exchange}
+\subsection{Massey-Omura Encryption}
+\subsection{ElGamal Public Key Encryption}
+\subsection{A cryptosystem based on the Weil Pairing}
+
+
+
+\end{document}

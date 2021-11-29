@@ -1,0 +1,55 @@
+\documentclass{article}
+\usepackage{fullpage}
+\usepackage{amsmath,amssymb}
+
+\newcommand{\FF}[1]{{\mathbb F}_{#1}}
+\newcommand{\ZZ}{{\mathbb Z}}
+\newcommand{\Zmod}[1]{\ZZ / #1\ZZ}
+
+\begin{document}
+
+Introductie: vertel onderwerp van de scriptie.
+\begin{itemize}
+\item Let doel van cryptografie uit:
+\begin{itemize}
+\item geheimhouding: Alice stuurt bericht naar Bob en Eve kan het niet begrijpen.
+\item authentifisering: Alice stuurt bericht naar Bob zdd Bob zeker weet dat het bericht echt door Alice gestuurd is.
+\item integriteit: Alice stuurt bericht naar Bob en Bob weet zeker dat het bericht onderweg niet veranderd is. 
+\end{itemize}
+\item Leg verschil uit tussen symmetrische en asymmetrische (public key) cryptografie.
+\item Leg uit dat cryptografie gebasseerd is op problemen die `makkelijk' te cre\"eren en `moeilijk' op te lossen zijn.
+\item Leg termen polynomial time, subexponential time en exponential time uit.
+\item Voorbeeld: DLP en priemfactorizatie. Merk op, DLP oplossing uniek modulo $N=$ord$(P)$.
+\item RSA-methode: $p,q$ priemgetallen, $N=pq$, dan $G=(\Zmod{N}^*,\cdot)$. Merk op dat het probleem is een inverse van $e\in G$ berekenen.
+\begin{itemize}
+\item Als $p$ en $q$ bekend zijn, dan kan $e^{-1}$ berekent worden door uitgebreide euclidische algorithme, i.e., bereken gcd$(e,(p-1)(q-1)=\#G)$.
+\item Los $e^k=1$ op voor $k$. Is DLP. dan $e^{-1}=e^{k-1}$.
+\end{itemize}
+\item Andere groepen, gebruikt voor DLP. (Makkelijk te definieren, elementaire operaties zijn efficient te berekenen en DLP is relatief moeilijk op te lossen.)
+\begin{itemize}
+\item $q=p^n$ voor $p$ een priemgetal, dan $G=(\FF{q}^*,\cdot)$. DLP kan relatief snel opgelost worden met behulp van index calculus method. 
+\item Elliptische kromme over een eindig lichaam, groepen waarvoor DLP exponentieel in het algemeen is.
+\end{itemize}
+\item Leg notatie voor affine en projectieve coordinaten $\mathbb{A}^2(\FF{q})$ en $\mathbb{P}^2(\FF{q})$ uit.
+\item Kies priemmacht $q=p^n$, eindig lichaam $\FF{q}$. Dan is een elliptische kromme gegeven door $$E:=\{[X,Y,Z]\in\mathbb{P}^2(\FF{q})\;\mid\;Y^2Z=X^3+AXZ^2+BZ^3\}.$$
+\item $Z\neq 0$, dan gebruik affine coordinaten $x:=X/Z$ en $y:=Y/Z$.
+\item $E$ kan gegeven worden in affine coordinaten $x,y$ door $$E:=\{(x,y)\in\mathbb{A}^2(\FF{q})\;\mid\;y^2=x^3+Ax+B\}$$ samen met een uniek punt $O=[0,1,0]$ in oneindig. 
+\item Let groupsstructuur van $E$ uit. $O$ is eenheids element van deze structuur.
+\item $P\in E$, $m\in\ZZ$, dan leg uit wat $[m]P$ is. 
+\item $P\in E$ orde $N$ en $Q\in \langle P \rangle$, dan $[m]P=Q$ oplossen voor $m\in\Zmod{N}$ is ECDLP.
+\item ECDLP is niet altijd `moeilijk' om op te lossen. In mijn scriptie bekijk ik meerdere aanvallen op dit probleem:
+\begin{itemize}
+\item Algemene aanvallen. 
+\begin{itemize}
+\item Deze bepalen hoe groot de orde van $P$ minimaal moet zijn. Dus geeft ook een idee van hoe groot $\#E$ moet zijn. (Let uit hoe $\#E$ afhangt van $q$, i.e., geef Hasse's stelling.)
+\item Pohlig Hellman methode. Bepaald dat orde van $P$ een groot priemgetal moet zijn. 
+\end{itemize}
+\item Aanvallen op specifieke krommen. Deze bepalen welke eigenschappen de kromme $E$ en het punt $P$ moet hebben om te zorgen dat de ECDLP `moeilijk' is.
+\end{itemize}
+\item Als er nog meer tijd over is, kan ik uitleggen wat de `trace of Frobenius' $t$ is, dat er een algoritme (Schoof's algorithme) bestaat die $\#E$ berekent, en dat er aanvallen op krommen $E$ zijn voor $t=0,1,2$. 
+\end{itemize}
+
+
+
+
+\end{document}

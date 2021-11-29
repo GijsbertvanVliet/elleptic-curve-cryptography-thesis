@@ -1,0 +1,58 @@
+documentclass[10pt]{article}
+\usepackage{fullpage}
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+
+\begin{document}
+Omdat de berekeningen tot aan (16) (die de gevalsonderscheiding 1 of 2 bepaalt) goed lijken te zijn zal ik hier de berekeningen van case 1 en case 2 apart behandelen:
+
+\section{Case 1}
+$l$ is een vast gekozen priemgetal. Ook ga ik ervan uit dat $(\frac{q}{l})=1$ en dat $0<w<l$ gekozen is zdd $w^2 \equiv q$ mod $l$.\\
+Allereerst moet er gecheckt worden of er een niet nul punt $P \in E[l]$ is zdd $\phi_l(P)=\pm wP$.\\
+Dit komt dus neer op het checken dat de x-coordinaten gelijk zijn. Dit ga ik nu doen voor het geval dat $w$ even en oneven is.
+\begin{itemize}
+\item ($w$ is even.) Als $P=(x,y) \in E[l]$, dan is de x-coordinaat van $\phi_l(P)=x^q$ en de x-coordinaat van $wP=x-\frac{\psi_{w-1}\psi_{w+1}}{\psi _w^2}$. Dus (na reductie van de formules $\psi$:) moeten we volgende vergelijking uitwerken:
+$$x^q=x-\frac{\psi'_{w-1}\psi'_{w+1}}{\psi _w^{'2}}$$
+Oftewel, met behulp van (6) uit het algorithme:
+$$x^q=x-\frac{f_{w-1}f_{w+1}}{y^2f_w^{2}}$$
+En dit geeft de formule van (17), waarvan we de de ggd met $f_l$ moeten berekenen.
+\item ($w$ is oneven.) Dit komt neer op De volgende vergelijking uitwerken:
+$$  x^p=x-\frac{\psi_{w-1}\psi_{w+1}}{\psi _w^2}=x-\frac{\psi'_{w-1}\psi'_{w+1}}{\psi _w^{'2}}=x-\frac{y^2f_{w-1}f_{w+1}}{f_w^{2}} $$
+Dit geeft dus precies de tweede vergelijking uit (17).
+\end{itemize}
+Als deze ggd berekend is en niet gelijk aan 1 is, moet worden gecheckt of $\phi _lP=wP$ voor een $P \in E[l]$. Als dit het geval is, dan geldt dat $t \equiv 2w$ mod $l$ en anders $t \equiv -2w$ mod $l$.\\
+Checken of $\phi _lP = wP$ komt neer op checken of de y-coordinaten overeen komen.
+\begin{itemize}
+\item ($w$ is even.) We moeten de volgende vergelijking uitwerken en de ggd met $f_l$ nemen (wederom zijn de formules $\psi$ al gereduceerd:
+$$  y^q=\frac{\psi'_{w+2}\psi_{w-1}^{'2}-\psi'_{w-2}\psi_{w+1}^{'2}}{4y\psi_w^{'3}}=\frac{y(f_{w+2}f_{w-1}^2-f_{w-2}f_{w+1}^2)}{4y^4f_w^3} $$
+Dit uitwerken en reduceren geeft dus volgende formule:
+$$4(x^3+Ax+B)^{\frac{q+3}{2}}f_w^3-f_{w+2}f_{w-1}^2+f_{w-2}f_{w+1}^2$$
+waarvan de ggd met $f_l$ genomen moet worden.
+\item ($w$ is oneven.) Dit komt neer op het uitwerken van de volgende gelijkheid:
+$$  y^q=\frac{\psi'_{w+2}\psi_{w-1}^{'2}-\psi'_{w-2}\psi_{w+1}^{'2}}{4y\psi_w^{'3}}=\frac{y^2(f_{w+2}f_{w-1}^2-f_{w-2}f_{w+1}^2)}{4yf_w^3}$$
+Dit uitwerken en reduceren levert de volgende formule:
+$$4(x^3+Ax+B)^{\frac{q-1}{2}}f_w^3-f_{w+2}f_{w-1}^2+f_{w-2}f_{w+1}^2$$
+\end{itemize}
+
+\section{Case 2}
+Hier moet gecheckt worden voor welke $0<\tau<l$ geldt dat $\phi_l^2(P)+kP=\tau \phi_l(P)$ voor alle $P \in E[l]$ ($k \equiv q$ mod $l$)\\
+Nu geldt voor $P=(x,y)$ dat $$\phi^2_l(P)+kP = (-x^{q^2}-x+\frac{\psi_{k-1}\psi_{k+1}}{\psi_k^2}+\lambda^2,-y^{q^2}-\lambda(-2x^{q^2}-x+\frac{\psi_{k-1}\psi_{k+1}}{\psi_k^2}+\lambda^2))$$
+waar
+$$ \lambda=\frac{\psi_{k+2}\psi_{k-1}^2-\psi_{k-2}\psi_{k+1}^2-4y^{q^2+1}\psi_k^3}{4\psi_ky((x-x^{q^2})\psi_k^2-\psi_{k-1}\psi_{k+1}}=\frac{\alpha}{\beta} $$
+En $\tau \phi_l(P) = (x^q-(\frac{\psi_{\tau+1}\phi_{\tau-1}}{\psi_\tau^2})^q,(\frac{\psi_{\tau+2}\psi_{\tau-1}^2-\psi_{\tau-2}\psi_{\tau+1}^2}{4y\psi_\tau^3})^q)$\\
+Er moeten dus twee gelijkheden uitgeschreven worden:
+\begin{itemize}
+\item $$-x^{q^2}-x+\frac{\psi_{k-1}\psi_{k+1}}{\psi_k^2}+\frac{\alpha^2}{\beta^2}=x^q-(\frac{\psi_{\tau+1}\phi_{\tau-1}}{\psi_\tau^2})^q$$
+$$ \Rightarrow -(x^{q^2}+x^q+x)\psi_k^2+\psi_{k-1}\psi_{k+1}+\psi_k^2\frac{\alpha^2}{\beta^2}=-\psi_k^2(\frac{\psi_{\tau+1}\phi_{\tau-1}}{\psi_\tau^2})^q$$
+$$ \Rightarrow \psi_\tau^{2q}(\beta^2(-(x^{q^2}+x^q+x)\psi_k^2+\psi_{k-1}\psi_{k+1})+\psi_k^2\alpha^2)+\beta^2\psi_k^2\psi_{\tau+1}^q\psi_{\tau-1}^q=0  $$
+En van deze formule moet dus gecheckt worden dat het nul modulo $f_l$ is. (Nadat reductie toegepast is om alle machten van y eruit te halen.)
+\item $$-y^{q^2}-\frac{\alpha}{\beta}(-2x^{q^2}-x+\frac{\psi_{k-1}\psi_{k+1}}{\psi_k^2}+\frac{\alpha^2}{\beta^2})=(\frac{\psi_{\tau+2}\psi_{\tau-1}^2-\psi_{\tau-2}\psi_{\tau+1}^2}{4y\psi_\tau^3})^q$$
+$$\Rightarrow 4y^q\psi_\tau^{3q}(-\beta^3y^{q^2}-\alpha(\beta^2(-2x^{q^2}-x+\frac{\psi_{k-1}+\psi_{k+1}}{\psi_k^2})+\alpha^2))=\beta^3(\psi_{\tau+2}\psi_{\tau-1}^2-\psi_{\tau-2}\psi_{\tau+1}^2)^q$$
+$$\Rightarrow 4y^q\psi_\tau^{3q}(-\beta^3\psi_k^2y^{q^2}-\alpha\beta^2(\psi_k^2(-2x^{q^2}-x)+\psi_{k-1}\psi_{k+1})+\alpha^3\psi_k^2)-\beta^3\psi_k^2(\psi_{\tau+2}\psi_{\tau-1}^2-\psi_{\tau-2}\psi_{\tau+1}^2)^q=0$$
+En deze formule kan iets mooier geschreven worden als
+$$ 4y^q\psi_\tau^{3q}(\alpha\beta^2(\psi_k^2(2x^{q^2}+x)-\psi_{k-1}\psi_{k+1})+\psi_k^2(\alpha^3-\beta^3y^{q^2})-\beta^3\psi_k^2(\psi_{\tau+2}\psi_{\tau-1}^2-\psi_{\tau-2}\psi_{\tau+1}^2)^q $$
+En dit is dus de formule waarvan gecheckt moet worden dat het nul modulo $f_l$ is.
+\end{itemize}
+
+\end{document}
+

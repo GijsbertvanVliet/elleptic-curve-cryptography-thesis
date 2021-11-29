@@ -1,0 +1,286 @@
+create_primes:=function(p,i)
+        if p eq 3 then
+                list:=[5];
+        else
+                list:=[3];
+        end if;
+        product:=list[1];
+        while product le 4*Sqrt(p^i) do
+                s:=NextPrime(list[#list]);
+                if not s eq p then
+                        Append(~list,s);
+                else
+                        Append(~list,NextPrime(s));
+                end if;
+                product := product*list[#list];
+        end while;
+        return product,list;
+end function;
+
+s:=function(n)
+        return n+2;
+end function;
+
+create_polynomials:=function(number,x,A,B)
+        f:=[-1,0,1,2,3*x^4+6*A*x^2+12*B*x-A^2,4*(x^6+5*A*x^4+20*B*x^3-5*A^2*x^2-4*A*B*x-8*B^2-A^3)];
+        k:=5;
+        while k le number do
+                n:= k div 2;
+                if IsEven(k) then
+                        Append(~f,1/2*f[s(n)]*(f[s(n+2)]*f[s(n-1)]^2-f[s(n-2)]*f[s(n+1)]^2));
+                else
+                        if IsEven(n) then
+                                Append(~f,f[s(n+2)]*f[s(n)]^3*(x^3+A*x+B)^2-f[s(n+1)]^3*f[s(n-1)]);
+                        else
+                                Append(~f,f[s(n+2)]*f[s(n)]^3-f[s(n+1)]^3*f[s(n-1)]*(x^3+A*x+B)^2);
+                        end if;
+                end if;
+                k:=k+1;
+        end while;
+        return f;
+end function;
+
+case_1:=function(f,l,q,x,A,B)
+        leg:=LegendreSymbol(q,l);
+        k:=q mod l;
+        if leg eq -1 then
+                return 0;
+        end if;
+        w:=1;
+        while not (w^2 mod l) eq k do
+                w:=w+1;
+        end while;
+        P<y>:=PolynomialRing(GF(q));
+        Q<y>:=quo<P|P!f[s(l)]>;
+        gw:=[Q!(P!f[s(w-2)]),Q!(P!f[s(w-1)]),Q!(P!f[s(w)]),Q!(P!f[s(w+1)]),Q!(P!f[s(w+2)])];
+        if IsEven(w) then
+                Pol:=(y^q-y)*gw[3]^2*(y^3+A*y+B)+gw[2]*gw[4];
+        else
+                Pol:=(y^q-y)*gw[3]^2+gw[2]*gw[4]*(y^3+A*y+B);
+        end if;
+        gcd:=Gcd(Parent(x)!Pol,f[s(l)]);
+        if gcd eq 1 then
+                return 0;
+        end if;
+        if IsEven(w) then
+                Pol:=4*(y^3+A*y+B)^(Integers()!((q+3)/2))*gw[3]^3-gw[5]*gw[2]^2+gw[1]*gw[4]^2;
+        else
+                Pol:=4*(y^3+A*y+B)^(Integers()!((q-1)/2))*gw[3]^3-gw[5]*gw[2]^2+gw[1]*gw[4]^2;
+        end if;
+        gcd:=Gcd(Parent(x)!Pol,f[s(l)]);
+        if gcd eq 1 then
+                return -2*w mod l;
+        else
+                return 2*w mod l;
+        end if;
+end function;
+
+case_2:=function(f_old,l,q,x,A,B)
+        k:= q mod l;
+        print "The degree of fl is", Degree(f_old[s(l)]);
+        x:=quo<Parent(x)|f_old[s(l)]>!x;
+        f:=[];
+        for i in [1..l+3] do
+                Append(~f,Parent(x)!(f_old[i]));
+        end for;
+        print "the list of f's has been calculated mod fl";
+        S:=x^3+A*x+B;
+        Sq_half:=S^(Integers()!((q-1)/2));
+        Sq:=Sq_half^2*S;                                /*This is S^q*/
+        Sq_square_half:=Parent(S)!(Sq_half^(q+1)/S);    /*This is S^((q^2-3)/2)*/
+        if IsEven(k) then
+                alpha:=f[s(k+2)]*f[s(k-1)]^2-f[s(k-2)]*f[s(k+1)]^2-4*Sq_square_half*S^3*f[s(k)]^3;
+                beta:=4*S*f[s(k)]*((x-x^q^2)*S*f[s(k)]^2-f[s(k-1)]*f[s(k+1)]);
+                delta1:=beta^2*(f[s(k-1)]*f[s(k+1)]-(x^q^2+x^q+x)*S*f[s(k)]^2)+alpha^2*S^2*f[s(k)]^2;
+                delta2:=beta^2*S*f[s(k)]^2;
+                delta3:=4*Sq_half*S*(alpha*beta^2*(S*f[s(k)]^2*(2*x^q^2+x)-f[s(k-1)]*f[s(k+1)])-S^2*f[s(k)]^2*(alpha^3+Sq_square_half*beta^3));
+                delta4:=beta^3*S*f[s(k)]^2;
+        else
+                alpha:=S*(f[s(k+2)]*f[s(k-1)]^2-f[s(k-2)]*f[s(k+1)]^2)-4*Sq_square_half*S^2*f[s(k)]^3;
+                beta:=4*f[s(k)]*((x-x^q^2)*f[s(k)]^2-S*f[s(k-1)]*f[s(k+1)]);
+                delta1:=beta^2*S*(S*f[s(k-1)]*f[s(k+1)]-(x^q^2+x^q+x)*f[s(k)]^2)+alpha^2*f[s(k)]^2;
+                delta2:=beta^2*S*f[s(k)]^2;
+                delta3:=4*Sq_half*(S*alpha*beta^2*(f[s(k)]^2*(2*x^q^2+x)-S*f[s(k-1)]*f[s(k+1)])-f[s(k)]^2*(alpha^3+Sq_square_half*S^3*beta^3));
+                delta4:=beta^3*S*f[s(k)]^2;
+        end if;
+        print "the first polynomials have been calculated";
+        fq:=[];
+        for i in [1..#f] do
+                Append(~fq,f[i]^q);
+        end for;
+        print "the second set of polynomials have been calculated";
+        for t in [1..l-1] do
+                if IsEven(t) then
+                        Pol1:=delta1*fq[s(t)]^2*Sq+delta2*fq[s(t-1)]*fq[s(t+1)];
+                        Pol2:=delta3*fq[s(t)]^3*S^(Integers()!((3*q+1)/2))-delta4*(fq[s(t+2)]*fq[s(t-1)]^2-fq[s(t-2)]*fq[s(t+1)]^2)*S^(Integers()!((q+1)/2));
+                else
+                        Pol1:=delta1*fq[s(t)]^2+delta2*fq[s(t-1)]*fq[s(t+1)]*Sq;
+                        Pol2:=delta3*fq[s(t)]^3-delta4*(fq[s(t+2)]*fq[s(t-1)]^2-fq[s(t-2)]*fq[s(t+1)]^2)*Sq;
+                end if;
+                print "the polynomials pol1 and pol2 have been calculated";
+                if Pol1 eq 0 and Pol2 eq 0 then
+                        return t;
+                end if;
+        end for;
+        return "No trace has been found";
+end function;
+
+calculate_trace_modl:=function(f,l,q,x,A,B)
+        k:=q mod l;
+        P<y>:=PolynomialRing(GF(q));
+        Q<y>:=quo<P|P!f[s(l)]>;
+        gk:=[Q!(P!f[s(k-1)]),Q!(P!f[s(k)]),Q!(P!f[s(k+1)])];
+        if IsEven(k) then
+                Pol:=(y^q^2-y)*gk[2]^2*(y^3+A*y+B)+gk[1]*gk[3];
+        else
+                Pol:=(y^q^2-y)*gk[2]^2+gk[1]*gk[3]*(y^3+A*y+B);
+        end if;
+        Pol:=Parent(x)!Pol;
+        gcd:=Gcd(Pol,f[s(l)]);
+        if gcd eq 1 then
+                print "case 2:";
+                return case_2(f,l,q,x,A,B);
+        else
+                print "case 1:";
+                return case_1(f,l,q,x,A,B);
+        end if;
+end function;
+
+calculate_gcd:=function(f,l,q,x,A,B)
+        k:=q mod l;
+        if IsEven(k) then
+                gcd:=Gcd((x^q^2-x)*f[s(k)]^2*(x^3+A*x+B)+f[s(k-1)]*f[s(k+1)],f[s(l)]);
+        else
+                gcd:=Gcd((x^q^2-x)*f[s(k)]^2+f[s(k-1)]*f[s(k+1)]*(x^3+A*x+B),f[s(l)]);
+        end if;
+        return gcd;
+end function;
+
+main:=function(p,i,A,B)
+        product,primes:=create_primes(p,i);
+        print primes;
+        F:=GF(p^i);
+        if F!(4*A^3+27*B^2) eq 0 then
+                return "The curve is singular.";
+        end if;
+        P<x>:=PolynomialRing(AlgebraicClosure(F));
+        f:=create_polynomials(primes[#primes]+1,x,A,B);
+        traces:=[];
+        for l in primes do
+                print l;
+                Append(~traces,calculate_trace_modl(f,l,p^i,x,A,B));
+        end for;
+        trace_mod:=ChineseRemainderTheorem(traces,primes);
+        if trace_mod lt 2*Sqrt(p^i) then
+                trace:=trace_mod;
+        else
+                trace:=trace_mod-product;
+        end if;
+        return p^i+1-trace;
+end function;
+
+check_gcd:=function();
+        for p in [3,5,7,11] do
+                for i in [1..4] do
+                        P<x>:=PolynomialRing(AlgebraicClosure(GF(p^i)));
+                        for A in GF(p^i) do
+                                for B in GF(p^i) do
+                                        if not 4*A^3+27*B^2 eq 0 then
+                                                for l in [k: k in [3..11]| IsPrime(k) and not k eq p] do
+                                                        E:=EllipticCurve([0,0,0,A,B]);
+                                                        trace:=(p^i+1-#E) mod l;
+                                                        f:=create_polynomials(l+1,x,A,B);
+                                                        gcd:=calculate_gcd(f,l,p^i,x,A,B);
+                                                        if gcd eq 1 and trace eq 0 then
+                                                                print Parent(f[#f]);
+                                                                print "A:=",A,", B=", B,", l=", l,", p=",p,", i=",i;
+                                                        end if;
+                                                end for;
+                                        end if;
+                                end for;
+                        end for;
+                end for;
+        end for;
+        return "end";
+end function;
+
+check_main:=function();
+        for p in [3,5,7,11,13] do
+                for i in [1..4] do
+                        P<x>:=PolynomialRing(AlgebraicClosure(GF(p^i)));
+                        for A in GF(p^i) do
+                                for B in GF(p^i) do
+                                        if not 4*A^3+27*B^2 eq 0 then
+                                                E:=EllipticCurve([0,0,0,A,B]);
+                                                print i,"   ",#E,main(p,i,A,B);
+                                        end if;
+                                end for;
+                        end for;
+                end for;
+        end for;
+        return "end";
+end function;
+
+
+check_case1:=function()
+        for p in [3,5,7,11] do
+                F:=GF(p);
+                P<x,y>:=PolynomialRing(AlgebraicClosure(F),2);
+                for A in F do
+                        for B in F do
+                                if not 4*A^3+27*B^2 eq 0 then
+                                        for l in [k:k in [3..13]|IsPrime(k) and not k eq p] do
+                                                psi,f:=create_polynomials(l+2,x,y,A,B);
+                                                E:=EllipticCurve([0,0,0,A,B]);
+                                                trace:= (p+1-#E) mod l;
+                                                k:=p mod l;
+                                                if IsEven(k) then
+                                                        gcd:=Gcd((x^p^2-x)*f[s(k)]^2*(x^3+A*x+B)+f[s(k-1)]*f[s(k+1)],f[s(l)]);
+                                                else
+                                                        gcd:=Gcd((x^p^2-x)*f[s(k)]^2+f[s(k-1)]*f[s(k+1)]*(x^3+A*x+B),f[s(l)]);
+                                                end if;
+                                                trace_program:=case_1(f,l,p,x,A,B);
+                                                if not gcd eq 1 and not trace_program eq trace then
+                                                        print "l=",l, ", the trace mod l is:", trace, " and the program says:", trace_program;
+                                                end if;
+                                        end for;
+                                end if;
+                        end for;
+                end for;
+        end for;
+        return "the end";
+end function;
+
+check_case2:=function()
+        for p in [3,5,7,11] do
+                F:=GF(p);
+                P<x,y>:=PolynomialRing(AlgebraicClosure(F),2);
+                for A in F do
+                        for B in F do
+                                if not 4*A^3+27*B^2 eq 0 then
+                                        for l in [k:k in [3..13]|IsPrime(k) and not k eq p] do
+                                                psi,f:=create_polynomials(l+2,x,y,A,B);
+                                                E:=EllipticCurve([0,0,0,A,B]);
+                                                trace:= (p+1-#E) mod l;
+                                                k:=p mod l;
+                                                if IsEven(k) then
+                                                        gcd:=Gcd((x^p^2-x)*f[s(k)]^2*(x^3+A*x+B)+f[s(k-1)]*f[s(k+1)],f[s(l)]);
+                                                else
+                                                        gcd:=Gcd((x^p^2-x)*f[s(k)]^2+f[s(k-1)]*f[s(k+1)]*(x^3+A*x+B),f[s(l)]);
+                                                end if;
+                                                if gcd eq 1 then
+                                                        Pol1,Pol2:=case_2(f,l,p,trace,x,A,B);
+                                                        print "Pol1=",Pol1, " and Pol2=",Pol2;
+                                                end if;
+                                        end for;
+                                end if;
+                        end for;
+                end for;
+        end for;
+        return "the end";
+end function;
+
+
+
+
+
